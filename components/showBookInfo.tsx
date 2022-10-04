@@ -109,7 +109,7 @@ const ShowBookInfo = () => {
       }),
     };
 
-    fetch("http://127.0.0.1:5000/get-rooms", requestRooms)
+    fetch("https://book-uio-room-api.herokuapp.com/get-rooms", requestRooms)
       .then((res) => res.json())
       .then((data) => {
         if (data != null) {
@@ -128,6 +128,8 @@ const ShowBookInfo = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
       },
       body: JSON.stringify({
         date: roundToNearest15(dateAndTimeFrom),
@@ -140,7 +142,7 @@ const ShowBookInfo = () => {
       }),
     };
 
-    fetch("http://127.0.0.1:5000/book", requestBook)
+    fetch("https://book-uio-room-api.herokuapp.com/book", requestBook)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
