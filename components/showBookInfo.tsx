@@ -102,7 +102,6 @@ const ShowBookInfo = () => {
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify({
         password: process.env.NEXT_PUBLIC_PASS,
         username: process.env.NEXT_PUBLIC_USER,
@@ -111,7 +110,6 @@ const ShowBookInfo = () => {
         building: selectedBuilding,
       }),
     };
-    console.log(process.env.NEXT_PUBLIC_USER);
 
     fetch("https://book-uio-room-api.herokuapp.com/get-rooms", requestRooms)
       .then((res) => res.json())
@@ -127,8 +125,9 @@ const ShowBookInfo = () => {
   };
 
   const bookRoom = () => {
-    setActivePage(3);
     setLoading(true);
+
+    setActivePage(3);
     const requestBook = {
       method: "POST",
       headers: {
@@ -142,6 +141,8 @@ const ShowBookInfo = () => {
         attendees: attendees,
         text: text,
         title: "Scheduled meeting for a project",
+        password: process.env.NEXT_PUBLIC_PASS,
+        username: process.env.NEXT_PUBLIC_USER,
       }),
     };
 
@@ -544,6 +545,11 @@ const ShowBookInfo = () => {
         <h1 className="text-xl font-medium text-gray-800">
           {loading ? "Booking the room..." : "Room booked!"}
         </h1>
+        <p className="text-sm text-gray-700">
+          {loading
+            ? "Please wait while we book the room for you."
+            : "Your room has been booked. Check your email for more details, because som UiO denies your booking."}
+        </p>
       </div>
       <div>
         {loading ? (
@@ -570,50 +576,60 @@ const ShowBookInfo = () => {
             </svg>
           </div>
         ) : (
-          <div className="flex flex-col justify-between mt-4">
-            <label className="text-sm text-gray-700 font-medium mb-1">
-              Booking details
-            </label>
-            <ul className="w-full">
-              <li className="flex flex-row justify-between">
-                <span className="text-gray-700 text-sm">Building</span>
-                <span className="text-gray-700 text-sm">
-                  {bookedInfo.building}
-                </span>
-              </li>
-              <li className="flex flex-row justify-between">
-                <span className="text-gray-700 text-sm">Room</span>
-                <span className="text-gray-700 text-sm">{bookedInfo.room}</span>
-              </li>
-              <li className="flex flex-row justify-between">
-                <span className="text-gray-700 text-sm">Date</span>
-                <span className="text-gray-700 text-sm">{bookedInfo.date}</span>
-              </li>
-              <li className="flex flex-row justify-between">
-                <span className="text-gray-700 text-sm">Time</span>
-                <span className="text-gray-700 text-sm">
-                  {bookedInfo.start_time} - {bookedInfo.end_time}
-                </span>
-              </li>
-              <li className="flex flex-row justify-between">
-                <span className="text-gray-700 text-sm">Attendees</span>
-                <span className="text-gray-700 text-sm">
-                  {bookedInfo.attendees.map((attendee: any) => (
-                    <span key={attendee}>{attendee}</span>
-                  ))}
-                </span>
-              </li>
-            </ul>
-          </div>
+          <>
+            {bookedInfo && (
+              <div className="flex flex-col justify-between mt-4">
+                <label className="text-sm text-gray-700 font-medium mb-1">
+                  Booking details
+                </label>
+                <ul className="w-full">
+                  <li className="flex flex-row justify-between">
+                    <span className="text-gray-700 text-sm">Building</span>
+                    <span className="text-gray-700 text-sm">
+                      {bookedInfo.building}
+                    </span>
+                  </li>
+                  <li className="flex flex-row justify-between">
+                    <span className="text-gray-700 text-sm">Room</span>
+                    <span className="text-gray-700 text-sm">
+                      {bookedInfo.room}
+                    </span>
+                  </li>
+                  <li className="flex flex-row justify-between">
+                    <span className="text-gray-700 text-sm">Date</span>
+                    <span className="text-gray-700 text-sm">
+                      {bookedInfo.date}
+                    </span>
+                  </li>
+                  <li className="flex flex-row justify-between">
+                    <span className="text-gray-700 text-sm">Time</span>
+                    <span className="text-gray-700 text-sm">
+                      {bookedInfo.start_time} - {bookedInfo.end_time}
+                    </span>
+                  </li>
+                  <li className="flex flex-row justify-between">
+                    <span className="text-gray-700 text-sm">Attendees</span>
+                    <span className="text-gray-700 text-sm">
+                      {bookedInfo.attendees.map((attendee: any) => (
+                        <span key={attendee}>{attendee}</span>
+                      ))}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="flex flex-row justify-between mt-4">
-        <button
-          className="w-full border text-gray-700 text-sm font-medium py-2 px-4 rounded hover:bg-gray-100"
-          onClick={() => setActivePage(1)}
-        >
-          Book another room
-        </button>
+        {bookedInfo && (
+          <button
+            className="w-full border text-gray-700 text-sm font-medium py-2 px-4 rounded hover:bg-gray-100"
+            onClick={() => setActivePage(1)}
+          >
+            Book another room
+          </button>
+        )}
       </div>
     </div>
   );
