@@ -145,6 +145,7 @@ const ShowBookInfo = () => {
         username: process.env.NEXT_PUBLIC_USER,
       }),
     };
+    // hei
 
     fetch("https://book-uio-room-api.herokuapp.com/book", requestBook)
       .then((res) => res.json())
