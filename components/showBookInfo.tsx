@@ -103,11 +103,14 @@ const ShowBookInfo = () => {
       },
 
       body: JSON.stringify({
+        password: process.env.NEXT_PUBLIC_PASS,
+        username: process.env.NEXT_PUBLIC_USER,
         date: roundToNearest15(dateAndTimeFrom),
         duration: duration,
         building: selectedBuilding,
       }),
     };
+    console.log(process.env.NEXT_PUBLIC_USER);
 
     fetch("https://book-uio-room-api.herokuapp.com/get-rooms", requestRooms)
       .then((res) => res.json())
@@ -123,13 +126,12 @@ const ShowBookInfo = () => {
   };
 
   const bookRoom = () => {
+    setActivePage(3);
     setLoading(true);
     const requestBook = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
       },
       body: JSON.stringify({
         date: roundToNearest15(dateAndTimeFrom),
@@ -145,8 +147,6 @@ const ShowBookInfo = () => {
     fetch("https://book-uio-room-api.herokuapp.com/book", requestBook)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setActivePage(3);
         if (data.status === "success") {
           setBookedInfo(data.info);
         } else if (data.status === "failed" || data.status === "error") {
