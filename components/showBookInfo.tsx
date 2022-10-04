@@ -84,6 +84,7 @@ const ShowBookInfo = () => {
   const [availableRooms, setAvailableRooms] = useState([]);
 
   const durations = [0.5, 1, 1.5, 2];
+  //test
 
   useEffect(() => {
     // timeTo is time from + duration
