@@ -111,7 +111,7 @@ const ShowBookInfo = () => {
       }),
     };
 
-    fetch("https://book-uio-room-api.herokuapp.com/get-rooms", requestRooms)
+    fetch("http://127.0.0.1:5000/get-rooms", requestRooms)
       .then((res) => res.json())
       .then((data) => {
         if (data != null) {

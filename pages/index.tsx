@@ -1,3 +1,4 @@
+import { AES, enc } from "crypto-js";
 import type { NextPage } from "next";
 import ShowBookInfo from "../components/showBookInfo";
 
