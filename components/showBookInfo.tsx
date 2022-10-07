@@ -1,65 +1,6 @@
 import { useEffect, useState } from "react";
-
-const buildings = [
-  "Atferdssenteret",
-  "CAS",
-  "Chateau Neuf",
-  "Cort Adelers gate 30",
-  "Det Norske Videnskaps-Akademi",
-  "Det odontologiske fakultet",
-  "Domus Academica",
-  "Domus Biblioteca",
-  "Domus Juridica",
-  "Domus Media",
-  "Domus Medica",
-  "Domus Medica tilbygg",
-  "Domus Nova",
-  "Domus Odontologica",
-  "Domus Theologica",
-  "Eilert Sundts hus A",
-  "Eilert Sundts hus B",
-  "F3B",
-  "Farmasibygningen",
-  "Forskningsparken",
-  "Forskningsveien 2B",
-  "Frederik Holsts hus",
-  "Fysikkbygningen",
-  "Gaustadalléen 30",
-  "Gaustadveien 69",
-  "Geologibygningen",
-  "Georg Morgenstiernes hus",
-  "GSH - Georg Sverdrups hus",
-  "Gullhaug torg 1",
-  "Gullhaugveien 1-3",
-  "Gydas vei 8",
-  "Harald Schjelderups hus",
-  "Harriet Holters hus",
-  "Helga Engs hus",
-  "HELSAM-rom",
-  "Henrik Wergelands hus",
-  "Historisk museum",
-  "IfI sine kollokvierom",
-  "Inven2 sine rom",
-  "ISF sine rom",
-  "Kabelgaten 32-40, Økern",
-  "Kada testrom",
-  "KHM sine møterom",
-  "Kjemibygningen",
-  "KLINMED-rom",
-  "KNH - Kristen Nygaards hus",
-  "KO - Kristian Ottosens hus",
-  "Kollokvierom i Fysikkbygningen",
-  "Kollokvierom i Georg Sverdrups hus",
-  "Kollokvierom i Ole-Johan Dahls hus",
-];
-
-const roundToNearest15 = (date: any) => {
-  const minutes = 15;
-  const ms = 1000 * 60 * minutes;
-
-  // 👇️ replace Math.round with Math.ceil to always round UP
-  return new Date(Math.round(date.getTime() / ms) * ms);
-};
+import { buildings } from "../util/data";
+import { roundToNearest15 } from "../util/fuctions";
 
 const ShowBookInfo = () => {
   const [loading, setLoading] = useState(false);
@@ -79,12 +20,8 @@ const ShowBookInfo = () => {
   const [attendee, setAttendee] = useState("");
   const [text, setText] = useState("Test");
   const [bookedInfo, setBookedInfo] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
-
   const [availableRooms, setAvailableRooms] = useState([]);
-
   const durations = [0.5, 1, 1.5, 2];
-  //test
 
   useEffect(() => {
     // timeTo is time from + duration
@@ -126,8 +63,8 @@ const ShowBookInfo = () => {
 
   const bookRoom = () => {
     setLoading(true);
-
     setActivePage(3);
+
     const requestBook = {
       method: "POST",
       headers: {
@@ -145,7 +82,6 @@ const ShowBookInfo = () => {
         username: process.env.NEXT_PUBLIC_USER,
       }),
     };
-    // hei
 
     fetch("https://book-uio-room-api.herokuapp.com/book", requestBook)
       .then((res) => res.json())
@@ -404,12 +340,7 @@ const ShowBookInfo = () => {
               </>
             ) : (
               <div className="flex flex-row justify-between mt-4">
-                <button
-                  className="w-full border text-gray-700 text-sm font-medium py-2 px-4 rounded hover:bg-gray-100"
-                  onClick={() => setActivePage(1)}
-                >
-                  No rooms available. Edit search
-                </button>
+                <p> No rooms available. Edit search</p>
               </div>
             )}
           </div>
@@ -483,7 +414,9 @@ const ShowBookInfo = () => {
               <li className="flex flex-row justify-between">
                 <span className="text-gray-700 text-sm">Date</span>
                 <span className="text-gray-700 text-sm">
-                  {dateAndTimeFrom.toLocaleDateString("en-GB", {
+                  {new Date(
+                    dateAndTimeFrom.getTime() + -2 * 60 * 60 * 1000
+                  ).toLocaleDateString("en-GB", {
                     weekday: "long",
                     year: "numeric",
                     month: "long",
@@ -494,17 +427,21 @@ const ShowBookInfo = () => {
               <li className="flex flex-row justify-between">
                 <span className="text-gray-700 text-sm">Time</span>
                 <span className="text-gray-700 text-sm">
-                  {dateAndTimeFrom.toLocaleTimeString([], {
+                  {new Date(
+                    dateAndTimeFrom.getTime() + -2 * 60 * 60 * 1000
+                  ).toLocaleTimeString("en-GB", {
                     hour: "2-digit",
                     minute: "2-digit",
-                  })}
+                  })}{" "}
                   {" - "}
                   {dateAndTimeTo
-                    ? dateAndTimeTo.toLocaleTimeString([], {
+                    ? new Date(
+                        dateAndTimeTo.getTime() + -2 * 60 * 60 * 1000
+                      ).toLocaleTimeString("en-GB", {
                         hour: "2-digit",
                         minute: "2-digit",
                       })
-                    : ""}
+                    : "No end time"}
                 </span>
               </li>
               <li className="flex flex-row justify-between">
@@ -656,16 +593,13 @@ const ShowBookInfo = () => {
 
   switch (activePage) {
     case 1:
-      return <div className="mt-10">{Page1()}</div>;
+      return <div className="m-4">{Page1()}</div>;
     case 2:
-      return <div className="mt-10">{Page2()}</div>;
+      return <div className="m-4">{Page2()}</div>;
     case 3:
-      return <div className="mt-10">{Page3()}</div>;
+      return <div className="m-4">{Page3()}</div>;
     case 4:
-      return <div className="mt-10">{Page4()}</div>;
-
-    default:
-      return <Page1 />;
+      return <div className="m-4">{Page4()}</div>;
   }
 };
 
