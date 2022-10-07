@@ -600,6 +600,9 @@ const ShowBookInfo = () => {
       return <div className="m-4">{Page3()}</div>;
     case 4:
       return <div className="m-4">{Page4()}</div>;
+
+    default:
+      return <div className="m-4">{Page1()}</div>;
   }
 };
 
