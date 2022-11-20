@@ -42,7 +42,7 @@ const SelectDateAndTime = () => {
         </svg>
         <Datetime
           value={dateAndTime}
-          onChange={(e) => setDateAndTime(e)}
+          onChange={(e: any) => setDateAndTime(e)}
           dateFormat="DD/MM/YYYY"
           timeFormat="HH:mm"
           initialViewMode="days"
@@ -50,7 +50,7 @@ const SelectDateAndTime = () => {
             placeholder: "Select Date and Time",
             className: "bg-gray-100 focus:outline-none w-full",
           }}
-          isValidDate={(current) => {
+          isValidDate={(current: any) => {
             // after this date and max 7 days after
             return (
               current.isAfter(
